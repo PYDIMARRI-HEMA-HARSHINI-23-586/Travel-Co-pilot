@@ -1,12 +1,69 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
+/* ---------------- Typing Effect ---------------- */
+function TypingText({ text }: { text: string }) {
+  const [displayed, setDisplayed] = useState("");
+
+  useEffect(() => {
+    let i = 0;
+    setDisplayed("");
+
+    const interval = setInterval(() => {
+      setDisplayed(text.slice(0, i + 1));
+      i++;
+      if (i >= text.length) clearInterval(interval);
+    }, 15);
+
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return <p className="text-gray-400 mt-1">{displayed}</p>;
+}
+
+/* ---------------- Main Page ---------------- */
 export default function Home() {
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState<any>(null);
+  const [listening, setListening] = useState(false);
 
+  const suggestions = [
+    "Luxury hotel in Goa under ₹10,000",
+    "Family-friendly hotel near Baga beach",
+    "3-star hotel with free cancellation",
+    "Best budget hotel in North Goa",
+  ];
+
+  /* ---------- Voice ---------- */
+  const startVoiceInput = () => {
+    const SpeechRecognition =
+      (window as any).SpeechRecognition ||
+      (window as any).webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Voice recognition works best in Chrome desktop.");
+      return;
+    }
+
+    const recognition = new SpeechRecognition();
+    recognition.lang = "en-IN";
+    recognition.start();
+
+    setListening(true);
+
+    recognition.onresult = (event: any) => {
+      const transcript = event.results[0][0].transcript;
+      setQuery(transcript);
+      setListening(false);
+    };
+
+    recognition.onerror = () => setListening(false);
+    recognition.onend = () => setListening(false);
+  };
+
+  /* ---------- Ask AI ---------- */
   const askCopilot = async () => {
     if (!query) return;
 
@@ -40,21 +97,54 @@ export default function Home() {
         </p>
       </div>
 
-      {/* Search Box */}
-      <div className="w-full max-w-2xl bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-4 shadow-xl flex gap-2">
-        <input
-          type="text"
-          placeholder="Try: 3-star hotel in Goa under ₹6000 near beach"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-          className="flex-1 bg-transparent outline-none px-3 py-2 text-white placeholder-gray-400"
-        />
-        <button
-          onClick={askCopilot}
-          className="bg-white text-black px-5 py-2 rounded-xl font-semibold hover:scale-105 transition"
-        >
-          Ask AI
-        </button>
+      {/* Search Section */}
+      <div className="w-full max-w-2xl">
+        {/* Glass Card */}
+        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-3xl p-4 shadow-2xl">
+          {/* Input Row */}
+          <div className="flex items-center gap-2">
+            <input
+              type="text"
+              placeholder="Try: 3-star hotel in Goa under ₹6000 near beach"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              className="flex-1 bg-transparent outline-none px-3 py-3 text-white placeholder-gray-400 text-sm"
+            />
+
+            {/* Mic */}
+            <button
+              onClick={startVoiceInput}
+              className={`px-4 py-2 rounded-xl font-semibold transition ${
+                listening
+                  ? "bg-red-500 text-white animate-pulse"
+                  : "bg-white/10 text-white hover:bg-white/20"
+              }`}
+            >
+              🎤
+            </button>
+
+            {/* Ask */}
+            <button
+              onClick={askCopilot}
+              className="bg-white text-black px-5 py-2 rounded-xl font-semibold hover:scale-105 transition"
+            >
+              Ask AI
+            </button>
+          </div>
+
+          {/* Suggestion Chips */}
+          <div className="flex flex-wrap gap-2 mt-4">
+            {suggestions.map((text, i) => (
+              <button
+                key={i}
+                onClick={() => setQuery(text)}
+                className="px-3 py-1.5 rounded-full bg-white/10 hover:bg-white/20 text-xs text-gray-300 transition"
+              >
+                {text}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Loading */}
@@ -76,15 +166,12 @@ export default function Home() {
               key={index}
               className="bg-white/5 border border-white/10 backdrop-blur-lg rounded-2xl p-6 shadow-lg hover:shadow-2xl transition"
             >
-              {/* Rank + Name */}
               <h2 className="text-xl font-semibold">
                 #{index + 1} {hotel.hotelName}
               </h2>
 
-              {/* Price */}
               <p className="mt-2 text-gray-300">Price: ₹{hotel.price}</p>
 
-              {/* Confidence Bar */}
               <div className="mt-4">
                 <p className="text-sm mb-1 text-gray-400">
                   AI Confidence: {hotel.confidence}%
@@ -97,13 +184,11 @@ export default function Home() {
                 </div>
               </div>
 
-              {/* Reason */}
               <div className="mt-4">
                 <p className="font-medium text-white">Why this hotel?</p>
-                <p className="text-gray-400 mt-1">{hotel.reason}</p>
+                <TypingText text={hotel.reason} />
               </div>
 
-              {/* Alert */}
               {hotel.alert && (
                 <p className="mt-4 text-red-400 font-medium">
                   ⚠️ {hotel.alert}
