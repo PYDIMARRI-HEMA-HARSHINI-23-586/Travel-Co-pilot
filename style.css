@@ -1,0 +1,319 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background-color: #e6e9f1; /* Light purple background */
+    display: flex;
+    flex-direction: column; /* Changed to column to stack header and content */
+    justify-content: flex-start;
+    align-items: center; /* Center content horizontally */
+    min-height: 100vh;
+    padding-bottom: 20px; /* Add padding to the bottom instead of top for spacing */
+    box-sizing: border-box;
+}
+
+.main-header {
+    width: 100%;
+    background-color: #2b487c; /* Dark blue from the logo image */
+    padding: 15px 20px;
+    margin-bottom: 20px; /* Space between header and main content */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+}
+
+.main-header .logo img {
+    height: 106px; /* Increased logo height by ~2cm */
+    vertical-align: middle;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px; /* Adjust as needed */
+    display: flex;
+    justify-content: center;
+}
+
+.search-form-card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15); /* Enhanced shadow */
+    padding: 40px; /* Increased padding */
+    display: flex;
+    flex-direction: column;
+    gap: 25px; /* Increased gap */
+    width: 100%;
+}
+
+.search-row {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap; /* Allow items to wrap on smaller screens */
+    align-items: center;
+}
+
+.primary-search-row {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #f0f0f0; /* Separator line */
+    padding-bottom: 20px;
+}
+
+.input-group {
+    display: flex;
+    align-items: center;
+    background-color: #fcfcfc; /* Creamy background */
+    border: 1px solid #e0e0e0; /* Light border */
+    border-radius: 8px;
+    padding: 10px 15px;
+    flex-grow: 1; /* Allow input groups to grow */
+    min-width: 180px; /* Minimum width for input groups */
+    position: relative;
+}
+
+.input-group i {
+    color: #4a67a1; /* Dark blue for icons */
+    margin-right: 10px;
+}
+
+.input-group input[type="text"],
+.input-group input[type="date"] {
+    border: none;
+    background: none;
+    outline: none;
+    flex-grow: 1;
+    font-size: 15px;
+    color: #333;
+    padding: 0;
+}
+
+.input-group input::placeholder {
+    color: #666;
+}
+
+/* Specific styling for the primary search inputs */
+.city-hotel-input {
+    flex-basis: 300px; /* Make city/hotel input wider */
+}
+.city-hotel-input .icon-background {
+    background-color: #f0f4f9; /* Light background for location icon */
+    padding: 8px;
+    border-radius: 5px;
+    margin-left: 10px;
+}
+.city-hotel-input .icon-background i {
+    margin: 0;
+    color: #4a67a1;
+}
+
+.date-input {
+    flex-basis: 280px; /* Date input group */
+}
+.date-input input {
+    width: 80px; /* Smaller width for date inputs */
+}
+.date-input .icon-background {
+    background-color: #f0f4f9;
+    padding: 8px;
+    border-radius: 5px;
+    margin-left: 10px;
+    margin-right: 5px;
+}
+.date-input .icon-background i {
+    margin: 0;
+    color: #8c98a9; /* Lighter moon icon */
+}
+
+.rooms-guests-input {
+    flex-basis: 220px; /* Rooms/guests input group */
+}
+.rooms-guests-input .dropdown-arrow {
+    margin-left: auto; /* Push arrow to the right */
+    margin-right: 0;
+}
+
+.search-button {
+    background-color: #31508f; /* Dark blue button */
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px 25px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    flex-shrink: 0; /* Prevent button from shrinking */
+}
+
+.search-button:hover {
+    background-color: #274174;
+}
+
+/* Advanced Search/Filters */
+.advanced-search-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Responsive grid */
+    gap: 20px;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.filter-group label {
+    font-size: 13px;
+    color: #777;
+    margin-left: 5px;
+}
+
+.filter-group .input-group {
+    padding: 8px 12px;
+    background-color: #fcfcfc;
+    border-color: #e0e0e0;
+}
+
+.filter-group .input-group input {
+    font-size: 14px;
+}
+
+.filter-group .input-group .dropdown-arrow {
+    margin-left: auto;
+    margin-right: 0;
+    color: #8c98a9; /* Lighter arrow color */
+}
+
+.trip-name-filter .input-group .question-icon {
+    margin-left: 10px;
+    margin-right: 0;
+    color: #8c98a9;
+    cursor: pointer;
+}
+
+/* Custom Dropdown List Styling */
+.dropdown-list {
+    position: absolute;
+    background-color: #fff;
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 1000;
+    width: calc(100% - 2px); /* Adjust width to match input */
+    left: 0;
+    top: calc(100% + 5px); /* Position below the input group */
+    display: none; /* Hidden by default */
+}
+
+.dropdown-list.show {
+    display: block; /* Show when 'show' class is added */
+}
+
+.dropdown-list-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    color: #333;
+}
+
+.dropdown-list-item:hover {
+    background-color: #f0f0f0;
+}
+
+/* Adjust filter group to contain the absolute positioned dropdown */
+.filter-group {
+    position: relative; /* Essential for positioning .dropdown-list */
+}
+
+/* Specific adjustments for nationality dropdown arrow */
+.nationality-filter .input-group {
+    position: relative; /* To position arrow absolutely within */
+}
+
+.nationality-filter .input-group .dropdown-arrow {
+    position: absolute;
+    right: 12px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0; /* Override previous margin-left: auto */
+    margin-right: 0;
+    pointer-events: none; /* Allows clicks to pass through to the input-group */
+}
+
+.nationality-filter #nationality-input {
+    padding-right: 35px; /* Make space for the arrow */
+}
+
+/* Specific adjustments for star rating dropdown arrow */
+.star-rating-filter .input-group {
+    position: relative; /* To position arrow absolutely within */
+}
+
+.star-rating-filter .input-group .dropdown-arrow {
+    position: absolute;
+    right: 12px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0; /* Override previous margin-left: auto */
+    margin-right: 0;
+    pointer-events: none; /* Allows clicks to pass through to the input-group */
+}
+
+.star-rating-filter #star-rating-input {
+    padding-right: 35px; /* Make space for the arrow */
+}
+
+/* Specific adjustments for budget dropdown arrow */
+.budget-filter .input-group {
+    position: relative; /* To position arrow absolutely within */
+}
+
+.budget-filter .input-group .dropdown-arrow {
+    position: absolute;
+    right: 12px; /* Adjust as needed */
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 0; /* Override previous margin-left: auto */
+    margin-right: 0;
+    pointer-events: none; /* Allows clicks to pass through to the input-group */
+}
+
+.budget-filter #budget-input {
+    padding-right: 35px; /* Make space for the arrow */
+}
+
+/* Golden border on focus/active */
+.input-group.city-hotel-input:focus-within,
+.input-group.date-input:focus-within,
+.input-group.rooms-guests-input:focus-within,
+.filter-group .input-group:focus-within {
+    border-color: #ffc107; /* Golden color */
+    box-shadow: 0 0 0 2px rgba(255, 193, 7, 0.3);
+}
+
+/* Adjustments for smaller screens */
+@media (max-width: 768px) {
+    .search-row {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .primary-search-row {
+        align-items: stretch;
+    }
+
+    .input-group,
+    .city-hotel-input,
+    .date-input,
+    .rooms-guests-input {
+        width: 100%;
+        flex-basis: auto;
+    }
+
+    .search-button {
+        width: 100%;
+    }
+
+    .advanced-search-row {
+        grid-template-columns: 1fr;
+    }
+}
