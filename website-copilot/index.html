@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Travel Co-pilot</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome for icons, if needed. For now, using unicode or simple text. -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header class="main-header">
+        <div class="logo">
+            <img src="logo.png" alt="TBO Holidays Logo">
+        </div>
+    </header>
+    <div class="container">
+        <div class="search-form-card">
+            <!-- Top Section: Primary Search -->
+            <div class="search-row primary-search-row">
+                <div class="input-group search-input city-hotel-input">
+                    <i class="fas fa-bed"></i>
+                    <input type="text" placeholder="Enter City or Hotel Name">
+                    <div class="icon-background">
+                        <i class="fas fa-map-marker-alt"></i>
+                    </div>
+                </div>
+
+                <div class="input-group search-input date-input">
+                    <i class="fas fa-calendar-alt"></i>
+                    <input type="text" placeholder="Check In" onfocus="(this.type='date')" onblur="(this.type='text')" class="check-in">
+                    <div class="icon-background">
+                        <i class="fas fa-moon"></i>
+                    </div>
+                    <input type="text" placeholder="Check Out" onfocus="(this.type='date')" onblur="(this.type='text')" class="check-out">
+                </div>
+
+                <div class="input-group search-input rooms-guests-input">
+                    <i class="fas fa-users"></i>
+                    <input type="text" value="1 Room (2 Adult, 0 Child)" readonly>
+                    <i class="fas fa-chevron-down dropdown-arrow"></i>
+                </div>
+
+                <button class="search-button">Search</button>
+            </div>
+
+            <!-- Bottom Section: Advanced Search/Filters -->
+            <div class="search-row advanced-search-row">
+                <div class="filter-group country-filter">
+                    <label>Country</label>
+                    <div class="input-group filter-input dropdown-trigger" id="country-dropdown-trigger">
+                        <i class="fas fa-flag"></i>
+                        <input type="text" placeholder="Choose from List" id="country-input">
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-list" id="country-list">
+                        <!-- Countries will be populated here by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="filter-group star-rating-filter">
+                    <label>Star Rating</label>
+                    <div class="input-group filter-input dropdown-trigger" id="star-rating-dropdown-trigger">
+                        <i class="fas fa-star"></i>
+                        <input type="text" value="4 Star or More" id="star-rating-input">
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-list" id="star-rating-list">
+                        <!-- Star Ratings will be populated here by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="filter-group budget-filter">
+                    <label>Budget</label>
+                    <div class="input-group filter-input dropdown-trigger" id="budget-dropdown-trigger">
+                        <i class="fas fa-briefcase"></i>
+                        <input type="text" placeholder="Budget ()" id="budget-input">
+                        <i class="fas fa-chevron-down dropdown-arrow"></i>
+                    </div>
+                    <div class="dropdown-list" id="budget-list">
+                        <!-- Budget options will be populated here by JavaScript -->
+                    </div>
+                </div>
+
+                <div class="filter-group preferred-location-filter">
+                    <label>Preferred location or area</label>
+                    <div class="input-group filter-input">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <input type="text" placeholder="Preferred location or area">
+                    </div>
+                </div>
+
+                <div class="filter-group trip-name-filter">
+                    <label>Give name to your trip</label>
+                    <div class="input-group filter-input">
+                        <i class="fas fa-briefcase"></i>
+                        <input type="text" placeholder="Trip Name ">
+                        <i class="fas fa-question-circle question-icon"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="search-results">
+            <!-- Search results will be displayed here -->
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
