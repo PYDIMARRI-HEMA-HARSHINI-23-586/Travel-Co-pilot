@@ -1,165 +1,144 @@
-# TBO Agent Copilot
+# ✈️ TBO Travel Co-pilot
 
-AI-powered hotel search using natural language queries. Search hotels by simply typing what you want in plain English.
+**The Ultimate AI-Powered B2B Travel Booking Assistant**
 
-## Features
+> Built for the TBO VoyageHack 2026
 
-- 🗣️ Natural language search (e.g., "5-star luxury hotel in Delhi, check in 10th March till 15th March")
-- 🎤 Voice input support
-- 🔍 Smart parsing of location, dates, star rating, price category, and guest count
-- 💰 Real-time price and availability display
-- ⚡ Fast search results from PostgreSQL database
-- 📈 **Smart Price Predictions** - AI-powered price forecasting with booking recommendations
-- 🌍 **NEW: AI Travel Info** - Dynamic destination guides powered by Grok API
+![TBO Travel Co-pilot](https://raw.githubusercontent.com/PYDIMARRI-HEMA-HARSHINI-23-586/Travel-Co-pilot/main/website-copilot/original_page.png)
 
-## Prerequisites
+## 🌟 Overview
 
-- Node.js (v16 or higher)
-- PostgreSQL (v12 or higher)
-- npm or yarn
+**TBO Travel Co-pilot** is a next-generation B2B travel platform that empowers travel agents with AI. It bridges the gap between complex booking systems and natural human interaction, allowing agents to find the perfect hotels using natural language, voice commands, and predictive insights.
 
-## Project Structure
+Unlike traditional booking engines, TBO Co-pilot offers a dual-interface for **Agents** and **Customers**, streamlining the communication and booking flow with real-time updates, AI-driven price predictions, and smart itinerary suggestions.
 
-```
-Travel-Co-pilot/
-├── tbo-copilot/          # Frontend (Next.js)
-└── website-copilot/      # Backend (Express.js + PostgreSQL)
-    └── server/
-```
+---
 
-## Setup Instructions
+## 🚀 Key Features
 
-### Quick Setup for Price Predictions (NEW!)
+### 🤖 1. AI-Powered Natural Search
+*   **Speak or Type:** "Find me a 5-star luxury hotel in Delhi for 2 adults next weekend."
+*   **Smart Parsing:** Automatically extracts location, dates, guests, and budget.
+*   **Voice Support:** Integrated microphone for hands-free querying.
 
-Run the automated setup script:
+### 💼 2. B2B Agent & Customer Workflow
+*   **Agent Portal:** Manage customer requests, view "pending" queries, and push curated hotel options directly to the customer's screen.
+*   **Customer Portal:** Customers can send requests ("I need a beach resort in Goa") and receive real-time options from their agent.
+*   **Real-Time Sync:** Instant status updates and notifications between agent and customer.
 
-```bash
-./setup-price-predictions.sh
-```
+### 📈 3. Smart Price Predictions
+*   **Buy or Wait?** AI analyzes historical data and booking trends to predict hotel prices.
+*   **Visual Indicators:** 
+    *   🔴 **Red:** Price likely to increase (Book Now!)
+    *   🔵 **Blue:** Price may drop (Wait)
+*   **Confidence Scores:** Shows the AI's confidence level in its prediction.
 
-Or follow manual steps below:
+### 🗺️ 4. Hyper-Local AI Insights (Powered by Groq)
+*   **Nearby Places:** Automatically lists airports, attractions, and restaurants near every hotel with travel times.
+*   **Destination Guides:** "What's the best food in Mumbai?" – Get instant, curated travel tips and guides without leaving the app.
 
-### Quick Setup for AI Travel Info (NEW!)
+---
 
-1. Get your Grok API key from [x.ai](https://x.ai)
-2. Add to `website-copilot/server/.env`:
-   ```
-   GROK_API_KEY=xai-your-key-here
-   ```
-3. Restart backend server
+## 🛠️ Tech Stack
 
-See [GROK_TRAVEL_INFO_SETUP.md](GROK_TRAVEL_INFO_SETUP.md) for details.
+*   **Frontend:** Next.js 16 (React, TypeScript, Tailwind CSS)
+*   **Backend:** Node.js, Express.js
+*   **Database:** PostgreSQL (with complex relational schema)
+*   **AI/LLM:** Groq API (Llama-3.3-70b-versatile) for intelligence
+*   **Tools:** Postman, Git
 
-### 1. Database Setup
+---
 
-```bash
-# Start PostgreSQL service
-# macOS: brew services start postgresql
-# Linux: sudo systemctl start postgresql
+## ⚡ Quick Start Guide
 
-# Create database
-psql postgres
-CREATE DATABASE tbo;
-\q
+### Prerequisites
+*   Node.js (v18+)
+*   PostgreSQL
 
-# Import schema and data
-cd website-copilot
-psql -U postgres -d tbo -f schema.sql
-psql -U postgres -d tbo -f dummy_data.sql
-```
+### 1. Installation
 
-### 2. Backend Setup
+Clone the repository and install dependencies:
 
 ```bash
+# Clone the repo
+git clone https://github.com/PYDIMARRI-HEMA-HARSHINI-23-586/Travel-Co-pilot.git
+cd Travel-Co-pilot
+
+# Install backend dependencies
 cd website-copilot/server
-
-# Install dependencies
 npm install
 
-# Update database credentials in server/index.js if needed:
-# - user: 'postgres'
-# - password: '' (your PostgreSQL password)
-# - database: 'tbo'
-
-# Start backend server
-node index.js
+# Install frontend dependencies
+cd ../../tbo-copilot
+npm install
 ```
 
-Backend will run on **http://localhost:3000**
+### 2. Environment Setup
 
-### 3. Frontend Setup
+Create a `.env` file in `website-copilot/server/` and add your API key:
+
+```env
+GROQ_API_KEY=your_groq_api_key_here
+```
+*(You can get a free key from [console.groq.com](https://console.groq.com))*
+
+### 3. Database Setup
+
+Ensure PostgreSQL is running, then execute the setup scripts:
 
 ```bash
-cd tbo-copilot
+# Create database and tables
+cd website-copilot
+createdb tbo
+psql -d tbo -f schema.sql
+psql -d tbo -f b2b_schema.sql
+psql -d tbo -f price_prediction_schema.sql
 
-# Install dependencies
-npm install
-
-# Start frontend
-npm run dev
+# Load dummy data
+psql -d tbo -f dummy_data.sql
 ```
 
-Frontend will run on **http://localhost:3002**
+### 4. Run the Application
 
-## Usage
+We've provided a simple script to start everything:
 
-1. Open browser and go to **http://localhost:3002**
-2. Type your search query in natural language, for example:
-   - "5-star luxury hotel in Delhi, check in 10th March till 15th March"
-   - "Budget hotel in Mumbai, 4-star, 2 adults, 15th Feb to 18th Feb"
-   - "Cheap 3-star hotel in Hyderabad, check in 20th Feb till 25th Feb"
-3. Click **Ask AI** or use the 🎤 microphone button for voice input
-4. View results with prices, ratings, and availability
-
-## Sample Queries
-
-```
-5-star luxury hotel in Delhi for 2 adults, check in 10th March till 15th March
-Budget hotel in Hyderabad, 4-star, check in 20th Feb till 25th Feb
-Cheap 3-star hotel in Jeju City, 2 adults 1 child, 5th March to 10th March
-Luxury hotel in Mumbai, 5-star, check in 1st March till 5th March
-4-star hotel in Busan, moderate price, 2 adults, 15th Feb to 20th Feb
+```bash
+# From the root directory
+./start-servers.sh
 ```
 
-## Available Locations
+*   **Frontend:** [http://localhost:3002](http://localhost:3002)
+*   **Backend:** [http://localhost:3000](http://localhost:3000)
 
-- **India**: Mumbai, Delhi, Hyderabad
-- **South Korea**: Busan, Jeju City, Incheon
+---
 
-## Date Range
+## 👤 Demo Credentials
 
-Database contains availability for **February - March 2026**
+To test the B2B workflow, open two different browsers (or one Incognito window):
 
-## Troubleshooting
+| Role | Email | Password |
+|------|-------|----------|
+| **Agent** | `agent@tbo.com` | `password123` |
+| **Customer** | `john@customer.com` | `password123` |
 
-### Backend won't start
-- Check PostgreSQL is running: `psql postgres`
-- Verify database exists: `\l` in psql
-- Check port 3000 is free: `lsof -i :3000`
+---
 
-### Frontend won't start
-- Check port 3002 is free
-- Delete `.next` folder and restart: `rm -rf .next && npm run dev`
+## 📚 Documentation
 
-### No search results
-- Verify dates are in Feb-March 2026
-- Check backend terminal for query logs
-- Ensure database has data: `psql -d tbo -c "SELECT COUNT(*) FROM Hotels;"`
+*   **[API Documentation](./website-copilot/server/README.md)** (Backend routes)
+*   **[Database Schema](./website-copilot/database_schema.md)** (ER Diagram & Tables)
 
-## Tech Stack
+---
 
-- **Frontend**: Next.js 16, React, TypeScript, Tailwind CSS
-- **Backend**: Node.js, Express.js
-- **Database**: PostgreSQL
-- **NLP**: Custom regex-based parser
+## 🏆 Hackathon Context
 
-## API Endpoints
+This project was developed to solve the challenge of **"Humanizing B2B Travel Tech"**. By integrating LLMs and predictive analytics, we transform the dry, tabular interface of traditional booking systems into an interactive, conversational, and intelligent experience that helps agents sell better and faster.
 
-- `POST /api/parse-query` - Parse natural language to structured params
-- `POST /api/search-hotels` - Search hotels with filters
+---
 
-See [API_DOCUMENTATION.md](API_DOCUMENTATION.md) for details.
+## 👥 Contributors
 
-## License
+*   **Team TBO Co-pilot**
 
-Built for TBO VoyageHack
+---
+*Built with ❤️ for travel.*
