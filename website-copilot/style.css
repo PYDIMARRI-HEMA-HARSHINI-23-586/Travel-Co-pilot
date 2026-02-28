@@ -1,0 +1,387 @@
+/* General Body and Container */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f0f2f5;
+    color: #333;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 20px auto;
+    padding: 0 15px;
+}
+
+/* Header */
+.main-header {
+    background-color: #fff;
+    padding: 15px 20px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo img {
+    height: 40px; /* Adjust as needed */
+}
+
+/* Search Form Card */
+.search-form-card {
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 25px;
+    margin-bottom: 30px;
+}
+
+.search-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 20px;
+    align-items: flex-end; /* Align items to the bottom */
+}
+
+.search-row:last-of-type {
+    margin-bottom: 0;
+}
+
+.input-group {
+    flex: 1;
+    min-width: 200px;
+    position: relative;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-size: 0.9em;
+    color: #555;
+}
+
+.input-group input[type="text"],
+.input-group input[type="date"] {
+    width: 100%;
+    padding: 10px 10px 10px 35px; /* Left padding for icon */
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 1em;
+    box-sizing: border-box;
+    transition: border-color 0.2s;
+}
+
+.input-group input[type="text"]:focus,
+.input-group input[type="date"]:focus {
+    border-color: #007bff;
+    outline: none;
+}
+
+.input-group .fas {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none; /* Make icon not interfere with input click */
+}
+
+/* Specific input adjustments */
+.city-hotel-input .icon-background {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: #e9ecef;
+    padding: 5px;
+    border-radius: 3px;
+    color: #555;
+}
+
+.date-input {
+    display: flex;
+    align-items: center;
+}
+.date-input input {
+    flex: 1;
+}
+.date-input input:first-child {
+    border-right: none;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+}
+.date-input input:last-child {
+    border-left: none;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+}
+.date-input .icon-background {
+    background-color: #e9ecef;
+    padding: 10px;
+    border-radius: 0;
+    color: #555;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rooms-guests-input {
+    position: relative;
+    cursor: pointer;
+}
+.rooms-guests-input .dropdown-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+/* Search Button */
+.search-button {
+    background-color: #007bff;
+    color: white;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    white-space: nowrap; /* Prevent button text from wrapping */
+}
+
+.search-button:hover {
+    background-color: #0056b3;
+}
+
+/* Filter Groups (Advanced Search) */
+.filter-group {
+    position: relative;
+    flex: 1;
+    min-width: 180px;
+}
+.filter-input {
+    cursor: pointer;
+}
+.filter-input .dropdown-arrow {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+/* Dropdown Lists */
+.dropdown-list {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1000;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    margin-top: 5px;
+}
+
+.dropdown-list.show {
+    display: block;
+}
+
+.dropdown-list div {
+    padding: 10px 15px;
+    cursor: pointer;
+}
+
+.dropdown-list div:hover {
+    background-color: #f1f1f1;
+}
+
+/* Question Icon */
+.question-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    cursor: help;
+}
+
+/* Rooms & Guests Dropdown Styling */
+.rooms-guests-input {
+    position: relative;
+}
+
+.rooms-guests-dropdown {
+    display: none;
+    position: absolute;
+    background-color: #fff;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 5px;
+    z-index: 1000;
+    width: 100%;
+    margin-top: 5px;
+    padding: 15px;
+}
+
+.rooms-guests-dropdown.show {
+    display: block;
+}
+
+.rooms-guests-selector .selector-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.rooms-guests-selector .selector-row label {
+    font-weight: 500;
+    margin: 0;
+}
+
+.rooms-guests-selector .selector-row span {
+    min-width: 30px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.rooms-guests-selector .btn-minus,
+.rooms-guests-selector .btn-plus {
+    width: 30px;
+    height: 30px;
+    border: 1px solid #ddd;
+    background-color: #f8f9fa;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.rooms-guests-selector .btn-minus:hover,
+.rooms-guests-selector .btn-plus:hover {
+    background-color: #e9ecef;
+}
+
+.rooms-guests-selector .btn-done {
+    width: 100%;
+    padding: 8px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.rooms-guests-selector .btn-done:hover {
+    background-color: #0056b3;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .search-row {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .input-group,
+    .filter-group {
+        min-width: unset;
+        width: 100%;
+    }
+    .search-button {
+        width: 100%;
+    }
+}
+
+/* --- Search Results Styling --- */
+#search-results {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+#search-results h2 {
+    color: #007bff;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.hotel-card {
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+    background-color: #fdfdfd;
+    transition: transform 0.2s ease-in-out;
+}
+
+.hotel-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+}
+
+.hotel-card h3 {
+    color: #333;
+    margin-top: 0;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 1.4em;
+}
+
+.hotel-card h3 .star-rating {
+    color: #ffc107; /* Gold color for stars */
+    font-size: 0.8em;
+}
+
+.hotel-card p {
+    color: #666;
+    font-size: 0.95em;
+    margin-bottom: 15px;
+}
+
+.room-types-container {
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+    margin-top: 15px;
+}
+
+.room-types-container h4 {
+    color: #444;
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 1.1em;
+}
+
+.room-item {
+    background-color: #f8f9fa;
+    border: 1px solid #e9ecef;
+    border-radius: 5px;
+    padding: 10px 15px;
+    margin-bottom: 10px;
+    font-size: 0.9em;
+}
+
+.room-item:last-child {
+    margin-bottom: 0;
+}
+
+.room-item strong {
+    color: #007bff;
+}
+
+.room-item span {
+    display: block;
+    font-size: 0.85em;
+    color: #777;
+    margin-top: 3px;
+}
