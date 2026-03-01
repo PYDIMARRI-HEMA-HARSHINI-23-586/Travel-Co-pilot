@@ -74,66 +74,80 @@ async function getPricePrediction(pool, hotel, checkInDate) {
     
     let riskScore = 0;
     
-    // Factor 1: Days until check-in
+    // Factor 1: Days until check-in (stronger impact)
     if (daysUntil < 7) {
-        riskScore += 30;
+        riskScore += 40;
         prediction.factors.push('Last minute booking - prices typically higher');
     } else if (daysUntil < 14) {
-        riskScore += 20;
+        riskScore += 25;
         prediction.factors.push('Less than 2 weeks away - limited availability');
     } else if (daysUntil > 60) {
-        riskScore -= 10;
+        riskScore -= 15;
         prediction.factors.push('Early booking - prices may fluctuate');
+    } else if (daysUntil > 30) {
+        riskScore -= 8;
+        prediction.factors.push('Good advance booking window');
     }
     
-    // Factor 2: Historical trend
+    // Factor 2: Historical trend (stronger weight)
     if (trendData.trend === 'increasing') {
-        riskScore += 25;
+        riskScore += 35;
         prediction.factors.push(`Price increased ${Math.abs(trendData.changePercent).toFixed(1)}% recently`);
     } else if (trendData.trend === 'decreasing') {
-        riskScore -= 15;
+        riskScore -= 25;
         prediction.factors.push(`Price dropped ${Math.abs(trendData.changePercent).toFixed(1)}% recently`);
     }
     
     // Factor 3: Weekend pricing
     if (isWeekend(checkInDate)) {
-        riskScore += 15;
+        riskScore += 20;
         prediction.factors.push('Weekend stay - higher demand');
     }
     
     // Factor 4: Star rating (luxury hotels more volatile)
     if (hotel.star_rating >= 5) {
-        riskScore += 10;
+        riskScore += 15;
         prediction.factors.push('Luxury property - dynamic pricing');
+    } else if (hotel.star_rating <= 2) {
+        riskScore -= 5;
+        prediction.factors.push('Budget property - stable pricing');
     }
     
-    // Factor 5: Availability
+    // Factor 5: Availability (stronger impact)
     if (hotel.available_rooms < 3) {
-        riskScore += 20;
+        riskScore += 30;
         prediction.factors.push('Low availability - book soon');
+    } else if (hotel.available_rooms < 5) {
+        riskScore += 15;
+        prediction.factors.push('Limited rooms available');
     } else if (hotel.available_rooms > 10) {
-        riskScore -= 10;
+        riskScore -= 12;
         prediction.factors.push('Good availability');
     }
     
-    // Calculate prediction
-    if (riskScore > 40) {
+    // Factor 6: Price level (add randomness based on hotel characteristics)
+    const priceVariance = (hotel.hotel_id % 7) - 3; // -3 to +3 based on hotel ID
+    riskScore += priceVariance * 3;
+    
+    // Calculate prediction with more variance
+    if (riskScore > 35) {
         prediction.status = 'increasing';
-        prediction.predictedChange = 10 + (riskScore - 40) * 0.5;
+        prediction.predictedChange = 8 + (riskScore - 35) * 0.6 + (Math.random() * 5);
         prediction.message = 'Price likely to increase';
         prediction.recommendation = '⚠️ Book now to lock this rate';
-        prediction.confidence = Math.min(85, 60 + riskScore * 0.3);
-    } else if (riskScore < -10) {
+        prediction.confidence = Math.min(90, 65 + riskScore * 0.35);
+    } else if (riskScore < -15) {
         prediction.status = 'decreasing';
-        prediction.predictedChange = -5 - Math.abs(riskScore) * 0.3;
+        prediction.predictedChange = -4 - Math.abs(riskScore) * 0.4 - (Math.random() * 3);
         prediction.message = 'Price may decrease';
         prediction.recommendation = 'Consider waiting a few days';
-        prediction.confidence = Math.min(75, 50 + Math.abs(riskScore) * 0.5);
+        prediction.confidence = Math.min(80, 55 + Math.abs(riskScore) * 0.5);
     } else {
         prediction.status = 'stable';
+        prediction.predictedChange = (Math.random() - 0.5) * 4; // -2% to +2%
         prediction.message = 'Price is stable';
         prediction.recommendation = 'Good time to book';
-        prediction.confidence = 70;
+        prediction.confidence = 65 + Math.random() * 10;
     }
     
     prediction.predictedPrice = currentPrice * (1 + prediction.predictedChange / 100);

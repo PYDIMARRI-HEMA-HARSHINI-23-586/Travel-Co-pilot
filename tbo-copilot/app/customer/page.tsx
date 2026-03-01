@@ -236,72 +236,121 @@ export default function CustomerPage() {
 
                 {req.hotel_list && req.sent_to_customer && (
                   <div className="mt-4 space-y-3">
-                    <p className="text-sm font-semibold text-emerald-400">
-                      ✅ Agent Response ({req.hotel_list.length} hotels found)
-                    </p>
-                    {req.hotel_list.map((hotel: any, idx: number) => {
-                      const isSelected = bookings.some(
-                        (b) =>
-                          b.request_id === req.request_id &&
-                          b.status === "customer_selected" &&
-                          b.hotel_data.hotel_id === hotel.hotel_id &&
-                          b.hotel_data.room_type_id === hotel.room_type_id
-                      );
-                      
-                      return (
-                        <div
-                          key={idx}
-                          className={`bg-white/5 border rounded-xl p-4 hover:border-emerald-500/30 transition ${
-                            isSelected ? "border-emerald-500 bg-emerald-500/10" : "border-white/10"
-                          }`}
-                        >
-                          {isSelected && (
-                            <div className="mb-2 px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-lg inline-block">
-                              <span className="text-xs text-emerald-400 font-semibold">✅ Your Selection</span>
+                    {/* Check if agent has already booked for this request */}
+                    {bookings.some((b) => b.request_id === req.request_id && b.status === "agent_confirmed") ? (
+                      <div className="bg-emerald-500/10 border border-emerald-500/30 rounded-xl p-4">
+                        <p className="text-sm font-semibold text-emerald-400 mb-3">
+                          ✅ Your agent selected the best hotel for you!
+                        </p>
+                        {req.hotel_list.filter((hotel: any) => 
+                          bookings.some((b) => 
+                            b.request_id === req.request_id && 
+                            b.status === "agent_confirmed" &&
+                            b.hotel_data.hotel_id === hotel.hotel_id &&
+                            b.hotel_data.room_type_id === hotel.room_type_id
+                          )
+                        ).map((hotel: any, idx: number) => (
+                          <div key={idx} className="bg-white/5 border border-emerald-500/30 rounded-xl p-4">
+                            <div className="flex justify-between items-start">
+                              <div className="flex-1">
+                                <h3 className="font-semibold text-white">{hotel.hotel_name}</h3>
+                                <p className="text-sm text-gray-400">
+                                  {hotel.city}, {hotel.country}
+                                </p>
+                                <p className="text-yellow-400 text-sm mt-1">
+                                  {"⭐".repeat(hotel.star_rating)}
+                                </p>
+                              </div>
+                              <div className="text-right">
+                                <p className="text-sm text-gray-400">Price per night</p>
+                                <p className="text-xl font-bold text-emerald-400">
+                                  ₹{hotel.min_price?.toLocaleString()}
+                                </p>
+                              </div>
                             </div>
-                          )}
-                          <div className="flex justify-between items-start">
-                            <div className="flex-1">
-                              <h3 className="font-semibold text-white">{hotel.hotel_name}</h3>
-                              <p className="text-sm text-gray-400">
-                                {hotel.city}, {hotel.country}
-                              </p>
-                              <p className="text-yellow-400 text-sm mt-1">
-                                {"⭐".repeat(hotel.star_rating)}
-                              </p>
-                            </div>
-                            <div className="text-right">
-                              <p className="text-sm text-gray-400">Price per night</p>
-                              <p className="text-xl font-bold text-emerald-400">
-                                ₹{hotel.min_price?.toLocaleString()}
-                              </p>
-                            </div>
-                          </div>
-                          <p className="text-xs text-gray-400 mt-2">{hotel.room_description}</p>
-                          <p className="text-xs text-gray-500 mt-1">
-                            Capacity: {hotel.max_adults} Adults, {hotel.max_children} Children
-                          </p>
-                          <div className="flex gap-2 mt-3">
+                            <p className="text-xs text-gray-400 mt-2">{hotel.room_description}</p>
+                            <p className="text-xs text-gray-500 mt-1">
+                              Capacity: {hotel.max_adults} Adults, {hotel.max_children} Children
+                            </p>
                             <button
                               onClick={() => viewHotelDetails(hotel)}
-                              className="flex-1 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition text-sm"
+                              className="mt-3 w-full px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition text-sm"
                             >
                               📋 View Details
                             </button>
-                            <button
-                              onClick={() => selectHotel(hotel, req.request_id)}
-                              className={`flex-1 px-4 py-2 rounded-lg transition text-sm font-semibold ${
-                                isSelected
-                                  ? "bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30"
-                                  : "bg-emerald-500 text-white hover:bg-emerald-600"
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <>
+                        <p className="text-sm font-semibold text-emerald-400">
+                          ✅ Agent Response ({req.hotel_list.length} hotels found)
+                        </p>
+                        {req.hotel_list.map((hotel: any, idx: number) => {
+                          const isSelected = bookings.some(
+                            (b) =>
+                              b.request_id === req.request_id &&
+                              b.status === "customer_selected" &&
+                              b.hotel_data.hotel_id === hotel.hotel_id &&
+                              b.hotel_data.room_type_id === hotel.room_type_id
+                          );
+                          
+                          return (
+                            <div
+                              key={idx}
+                              className={`bg-white/5 border rounded-xl p-4 hover:border-emerald-500/30 transition ${
+                                isSelected ? "border-emerald-500 bg-emerald-500/10" : "border-white/10"
                               }`}
                             >
-                              {isSelected ? "🔄 Change Selection" : "✅ Select This Hotel"}
-                            </button>
-                          </div>
-                        </div>
-                      );
-                    })}
+                              {isSelected && (
+                                <div className="mb-2 px-2 py-1 bg-emerald-500/20 border border-emerald-500/30 rounded-lg inline-block">
+                                  <span className="text-xs text-emerald-400 font-semibold">✅ Your Selection</span>
+                                </div>
+                              )}
+                              <div className="flex justify-between items-start">
+                                <div className="flex-1">
+                                  <h3 className="font-semibold text-white">{hotel.hotel_name}</h3>
+                                  <p className="text-sm text-gray-400">
+                                    {hotel.city}, {hotel.country}
+                                  </p>
+                                  <p className="text-yellow-400 text-sm mt-1">
+                                    {"⭐".repeat(hotel.star_rating)}
+                                  </p>
+                                </div>
+                                <div className="text-right">
+                                  <p className="text-sm text-gray-400">Price per night</p>
+                                  <p className="text-xl font-bold text-emerald-400">
+                                    ₹{hotel.min_price?.toLocaleString()}
+                                  </p>
+                                </div>
+                              </div>
+                              <p className="text-xs text-gray-400 mt-2">{hotel.room_description}</p>
+                              <p className="text-xs text-gray-500 mt-1">
+                                Capacity: {hotel.max_adults} Adults, {hotel.max_children} Children
+                              </p>
+                              <div className="flex gap-2 mt-3">
+                                <button
+                                  onClick={() => viewHotelDetails(hotel)}
+                                  className="flex-1 px-4 py-2 bg-blue-500/20 text-blue-400 rounded-lg hover:bg-blue-500/30 transition text-sm"
+                                >
+                                  📋 View Details
+                                </button>
+                                <button
+                                  onClick={() => selectHotel(hotel, req.request_id)}
+                                  className={`flex-1 px-4 py-2 rounded-lg transition text-sm font-semibold ${
+                                    isSelected
+                                      ? "bg-yellow-500/20 text-yellow-400 hover:bg-yellow-500/30"
+                                      : "bg-emerald-500 text-white hover:bg-emerald-600"
+                                  }`}
+                                >
+                                  {isSelected ? "🔄 Change Selection" : "✅ Select This Hotel"}
+                                </button>
+                              </div>
+                            </div>
+                          );
+                        })}
+                      </>
+                    )}
                   </div>
                 )}
 

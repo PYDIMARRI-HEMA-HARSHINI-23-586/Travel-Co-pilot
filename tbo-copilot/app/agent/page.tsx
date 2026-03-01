@@ -153,12 +153,16 @@ export default function AgentPage() {
     if (!selectedHotel) return;
 
     try {
-      const response = await fetch("http://localhost:3000/api/book-hotel", {
+      const response = await fetch("http://localhost:3000/api/agent/book-for-customer", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           hotel_id: selectedHotel.hotel_id,
           room_type_id: selectedHotel.room_type_id,
+          hotel_data: selectedHotel,
+          request_id: activeRequest?.request_id,
+          customer_id: activeRequest?.customer_id,
+          agent_id: user.id,
         }),
       });
 

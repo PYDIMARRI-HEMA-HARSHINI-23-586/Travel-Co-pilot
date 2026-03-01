@@ -675,6 +675,43 @@ app.get('/api/customer/bookings/:customer_id', async (req, res) => {
     }
 });
 
+// Agent: Book hotel for customer
+app.post('/api/agent/book-for-customer', async (req, res) => {
+    try {
+        const { hotel_id, room_type_id, hotel_data, request_id, customer_id, agent_id } = req.body;
+        
+        // Update room availability
+        await pool.query(
+            `UPDATE RoomAvailabilityAndPricing
+             SET available_rooms = available_rooms - 1
+             WHERE room_type_id = $1 AND available_rooms > 0`,
+            [room_type_id]
+        );
+        
+        // If booking for a customer request, create booking entry
+        if (request_id && customer_id) {
+            await pool.query(
+                `INSERT INTO bookings (request_id, customer_id, hotel_data, status, agent_id, agent_confirmed_at, completed_at) 
+                 VALUES ($1, $2, $3, 'agent_confirmed', $4, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)`,
+                [request_id, customer_id, JSON.stringify(hotel_data), agent_id]
+            );
+            
+            // Update request status
+            await pool.query(
+                `UPDATE requests 
+                 SET status = 'completed', booking_status = 'confirmed', updated_at = CURRENT_TIMESTAMP
+                 WHERE request_id = $1`,
+                [request_id]
+            );
+        }
+        
+        res.json({ success: true, message: 'Booking completed successfully' });
+    } catch (err) {
+        console.error('Agent booking error:', err);
+        res.status(500).json({ error: 'Failed to complete booking' });
+    }
+});
+
 // Grok API - Place Information
 app.post('/api/place-info', async (req, res) => {
     try {
