@@ -17,6 +17,7 @@ export default function AgentPage() {
   const [showBookingModal, setShowBookingModal] = useState(false);
   const [bookingSuccess, setBookingSuccess] = useState(false);
   const [completedTasks, setCompletedTasks] = useState<any[]>([]);
+  const [pricePredictions, setPricePredictions] = useState<{[key: string]: any}>({});
   const router = useRouter();
 
   useEffect(() => {
@@ -84,11 +85,34 @@ export default function AgentPage() {
     
     setLoading(true);
     setHotels([]);
+    setPricePredictions({});
 
     try {
       const response = await parseAndSearch(query);
       if (response.success && response.data) {
         setHotels(response.data);
+        
+        // Fetch price predictions for each hotel
+        const predictions: {[key: string]: any} = {};
+        for (const hotel of response.data.slice(0, 10)) {
+          try {
+            const predRes = await fetch('http://localhost:3000/api/price-prediction', {
+              method: 'POST',
+              headers: { 'Content-Type': 'application/json' },
+              body: JSON.stringify({ 
+                hotel: hotel, 
+                check_in_date: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000).toISOString().split('T')[0]
+              })
+            });
+            const predData = await predRes.json();
+            if (predData.success) {
+              predictions[`${hotel.hotel_id}-${hotel.room_type_id}`] = predData.prediction;
+            }
+          } catch (err) {
+            console.error('Prediction error:', err);
+          }
+        }
+        setPricePredictions(predictions);
       }
     } catch (err) {
       console.error("Search error:", err);
@@ -441,9 +465,13 @@ export default function AgentPage() {
               )}
             </div>
 
-            {hotels.map((hotel) => (
+            {hotels.map((hotel) => {
+              const hotelKey = `${hotel.hotel_id}-${hotel.room_type_id}`;
+              const prediction = pricePredictions[hotelKey];
+              
+              return (
               <div
-                key={`${hotel.hotel_id}-${hotel.room_type_id}`}
+                key={hotelKey}
                 className="bg-white/5 backdrop-blur-lg border border-white/10 rounded-2xl p-6 shadow-lg"
               >
                 <div className="flex justify-between items-start">
@@ -484,6 +512,54 @@ export default function AgentPage() {
                   </div>
                 </div>
 
+                {/* Price Prediction */}
+                {prediction && (
+                  <div className={`mt-4 p-4 rounded-xl border-2 ${
+                    prediction.status === 'increasing' 
+                      ? 'bg-red-500/10 border-red-500/30' 
+                      : prediction.status === 'decreasing'
+                      ? 'bg-blue-500/10 border-blue-500/30'
+                      : 'bg-gray-500/10 border-gray-500/30'
+                  }`}>
+                    <div className="flex items-center justify-between mb-2">
+                      <div className="flex items-center gap-2">
+                        <span className="text-2xl">
+                          {prediction.status === 'increasing' ? '🔴' : prediction.status === 'decreasing' ? '🔵' : '⚪'}
+                        </span>
+                        <div>
+                          <p className={`font-semibold ${
+                            prediction.status === 'increasing' ? 'text-red-400' : 
+                            prediction.status === 'decreasing' ? 'text-blue-400' : 'text-gray-400'
+                          }`}>
+                            {prediction.message}
+                          </p>
+                          <p className="text-xs text-gray-400">Confidence: {prediction.confidence}%</p>
+                        </div>
+                      </div>
+                      {prediction.predictedChange !== 0 && (
+                        <div className="text-right">
+                          <p className={`text-lg font-bold ${
+                            prediction.predictedChange > 0 ? 'text-red-400' : 'text-blue-400'
+                          }`}>
+                            {prediction.predictedChange > 0 ? '+' : ''}{prediction.predictedChange.toFixed(1)}%
+                          </p>
+                          <p className="text-xs text-gray-400">
+                            ₹{prediction.predictedPrice.toLocaleString()}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                    <p className="text-sm text-white font-semibold mb-2">{prediction.recommendation}</p>
+                    {prediction.factors && prediction.factors.length > 0 && (
+                      <div className="text-xs text-gray-400 space-y-1">
+                        {prediction.factors.slice(0, 3).map((factor: string, idx: number) => (
+                          <p key={idx}>• {factor}</p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                )}
+
                 <button
                   onClick={() => finalizeBooking(hotel)}
                   className="mt-4 w-full px-6 py-3 bg-gradient-to-r from-emerald-500 to-teal-500 text-white font-semibold rounded-xl hover:from-emerald-600 hover:to-teal-600 transition shadow-lg"
@@ -491,7 +567,7 @@ export default function AgentPage() {
                   ✅ Finalize Booking
                 </button>
               </div>
-            ))}
+            )})}
           </div>
         )}
       </div>
