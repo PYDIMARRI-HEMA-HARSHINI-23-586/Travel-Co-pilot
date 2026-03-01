@@ -216,7 +216,6 @@ chmod +x start-servers.sh
 
 ## 🚀 Future Roadmap
 
-- [ ] **Flight Integration** – Add flight booking with hotel packages
 - [ ] **Multi-Currency Support** – Global B2B expansion
 - [ ] **WhatsApp Bot** – Book hotels via WhatsApp chat
 - [ ] **Analytics Dashboard** – Agent performance metrics
