@@ -7,7 +7,6 @@
 <div align="center">
 
 [![Demo Video](https://img.shields.io/badge/▶️_Watch_Demo-FF0000?style=for-the-badge&logo=youtube&logoColor=white)](https://drive.google.com/file/d/1aWfc5Szs9sj2EjYlcNc1qvwLw2KxkYbc/view?usp=sharing)
-[![Live Demo](https://img.shields.io/badge/🚀_Try_Live_Demo-4285F4?style=for-the-badge)](http://localhost:3002)
 [![Documentation](https://img.shields.io/badge/📚_Read_Docs-00C853?style=for-the-badge)](./website-copilot/server/README.md)
 
 </div>
