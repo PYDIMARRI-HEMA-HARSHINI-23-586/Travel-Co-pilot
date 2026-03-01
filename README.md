@@ -98,8 +98,7 @@
 | **Backend** | Node.js + Express.js | Scalable REST APIs, async processing |
 | **Database** | PostgreSQL | Complex relational data, ACID compliance |
 | **AI/LLM** | Groq API (Llama-3.3-70b) | 10x faster inference than GPT-4, cost-effective |
-| **Real-Time** | WebSockets (planned) | Live agent-customer sync |
-| **Deployment** | Docker + AWS (production-ready) | Containerized, scalable infrastructure |
+
 
 </div>
 
