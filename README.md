@@ -13,6 +13,7 @@
 Unlike traditional booking engines, TBO Co-pilot offers a dual-interface for **Agents** and **Customers**, streamlining the communication and booking flow with real-time updates, AI-driven price predictions, and smart itinerary suggestions.
 
 ---
+https://drive.google.com/file/d/1aWfc5Szs9sj2EjYlcNc1qvwLw2KxkYbc/view?usp=sharing
 
 ## 🚀 Key Features
 
