@@ -33,7 +33,7 @@
 
 ✅ **Natural Language AI** – Agents speak/type naturally: "5-star hotel in Delhi for 2 adults next weekend"  
 ✅ **Real-Time Agent-Customer Portal** – Live request management with instant push notifications  
-✅ **Smart Price Predictions** – ML-powered "Buy Now" or "Wait" recommendations with confidence scores  
+✅ **Smart Price Predictions** – "Buy Now" or "Wait" recommendations with confidence scores  
 ✅ **Hyper-Local Intelligence** – Auto-generated nearby attractions, restaurants, and travel times  
 ✅ **Voice-First Interface** – Hands-free booking for busy agents
 
