@@ -14,6 +14,8 @@ Unlike traditional booking engines, TBO Co-pilot offers a dual-interface for **A
 
 ---
 
+
+
 ## 🚀 Key Features
 
 ### 🤖 1. AI-Powered Natural Search
@@ -130,15 +132,9 @@ To test the B2B workflow, open two different browsers (or one Incognito window):
 
 ---
 
-## 🏆 Hackathon Context
-
-This project was developed to solve the challenge of **"Humanizing B2B Travel Tech"**. By integrating LLMs and predictive analytics, we transform the dry, tabular interface of traditional booking systems into an interactive, conversational, and intelligent experience that helps agents sell better and faster.
-
----
-
 ## 👥 Contributors
 
 *   **Team TBO Co-pilot**
 
 ---
-*Built with ❤️ for travel.*
+*Built with ❤️ for TBO.*
