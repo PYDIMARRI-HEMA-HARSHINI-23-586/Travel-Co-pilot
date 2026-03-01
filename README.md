@@ -14,8 +14,6 @@ Unlike traditional booking engines, TBO Co-pilot offers a dual-interface for **A
 
 ---
 
-
-
 ## 🚀 Key Features
 
 ### 🤖 1. AI-Powered Natural Search
@@ -134,7 +132,7 @@ To test the B2B workflow, open two different browsers (or one Incognito window):
 
 ## 👥 Contributors
 
-*   **Team TBO Co-pilot**
+*   **Team Tech Valkyries**
 
 ---
 *Built with ❤️ for TBO.*
