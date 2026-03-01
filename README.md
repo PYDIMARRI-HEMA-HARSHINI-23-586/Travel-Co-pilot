@@ -138,7 +138,7 @@ This project was developed to solve the challenge of **"Humanizing B2B Travel Te
 
 ## 👥 Contributors
 
-*   **Team TBO Co-pilot**
+*   **Team Tech Valkyries**
 
 ---
 *Built with ❤️ for travel.*
